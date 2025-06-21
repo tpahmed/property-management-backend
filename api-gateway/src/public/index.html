@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Management API</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 5px solid #0275d8;
+        }
+        h1 {
+            margin: 0;
+            color: #0275d8;
+        }
+        h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 30px;
+            color: #0275d8;
+        }
+        h3 {
+            margin-top: 25px;
+            color: #5cb85c;
+        }
+        .endpoint {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border-left: 3px solid #5cb85c;
+        }
+        .method {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .get {
+            background-color: #5bc0de;
+            color: white;
+        }
+        .post {
+            background-color: #5cb85c;
+            color: white;
+        }
+        .put {
+            background-color: #f0ad4e;
+            color: white;
+        }
+        .delete {
+            background-color: #d9534f;
+            color: white;
+        }
+        .path {
+            font-family: monospace;
+            font-size: 1.1em;
+        }
+        .description {
+            margin-top: 5px;
+            color: #666;
+        }
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #777;
+            font-size: 0.9em;
+        }
+        .service-health {
+            margin-top: 20px;
+        }
+        #healthStatus {
+            margin-top: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .status-up {
+            color: #5cb85c;
+            font-weight: bold;
+        }
+        .status-down {
+            color: #d9534f;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Property Management API Documentation</h1>
+        <p>Version 1.0.0</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Overview</h2>
+            <p>This API provides endpoints for managing properties, users, maintenance requests, and payments in a property management system.</p>
+            <p>The API is organized around RESTful principles and uses standard HTTP response codes and authentication with JWT tokens.</p>
+        </section>
+
+        <section class="service-health">
+            <h2>Service Health</h2>
+            <button onclick="checkHealth()">Check Services Status</button>
+            <div id="healthStatus"></div>
+        </section>
+
+        <section>
+            <h2>Authentication Service</h2>
+            <p>Base URL: <code>/api/auth</code></p>
+            
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="path">/api/auth/register</span>
+                <div class="description">Register a new user</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="path">/api/auth/login</span>
+                <div class="description">Login a user</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/auth/me</span>
+                <div class="description">Get current user info</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Users Service</h2>
+            <p>Base URL: <code>/api/users</code></p>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/users</span>
+                <div class="description">Get all users (admin only)</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/users/:id</span>
+                <div class="description">Get user by ID</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <span class="path">/api/users/:id</span>
+                <div class="description">Update user</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method delete">DELETE</span>
+                <span class="path">/api/users/:id</span>
+                <div class="description">Delete user (admin only)</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Properties Service</h2>
+            <p>Base URL: <code>/api/properties</code></p>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/properties</span>
+                <div class="description">Get all properties</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="path">/api/properties</span>
+                <div class="description">Create a new property</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/properties/:id</span>
+                <div class="description">Get property by ID</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <span class="path">/api/properties/:id</span>
+                <div class="description">Update property</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method delete">DELETE</span>
+                <span class="path">/api/properties/:id</span>
+                <div class="description">Delete property</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Applications Service</h2>
+            <p>Base URL: <code>/api/applications</code></p>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/applications</span>
+                <div class="description">Get all applications</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="path">/api/applications</span>
+                <div class="description">Submit a new application</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/applications/:id</span>
+                <div class="description">Get application by ID</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <span class="path">/api/applications/:id</span>
+                <div class="description">Update application status</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Leases Service</h2>
+            <p>Base URL: <code>/api/leases</code></p>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/leases</span>
+                <div class="description">Get all leases</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="path">/api/leases</span>
+                <div class="description">Create a new lease</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/leases/:id</span>
+                <div class="description">Get lease by ID</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <span class="path">/api/leases/:id</span>
+                <div class="description">Update lease</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Maintenance Service</h2>
+            <p>Base URL: <code>/api/maintenance</code></p>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/maintenance</span>
+                <div class="description">Get all maintenance requests</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="path">/api/maintenance</span>
+                <div class="description">Create a new maintenance request</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/maintenance/:id</span>
+                <div class="description">Get maintenance request by ID</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <span class="path">/api/maintenance/:id</span>
+                <div class="description">Update maintenance request</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Payments Service</h2>
+            <p>Base URL: <code>/api/payments</code></p>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/payments</span>
+                <div class="description">Get all payments</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <span class="path">/api/payments</span>
+                <div class="description">Create a new payment</div>
+            </div>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <span class="path">/api/payments/:id</span>
+                <div class="description">Get payment by ID</div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Property Management API &copy; 2023</p>
+    </footer>
+
+    <script>
+        async function checkHealth() {
+            const healthStatus = document.getElementById('healthStatus');
+            healthStatus.innerHTML = '<p>Checking services status...</p>';
+            
+            try {
+                const response = await fetch('/services/health');
+                const data = await response.json();
+                
+                let tableHtml = '<table><tr><th>Service</th><th>Status</th></tr>';
+                
+                for (const [service, status] of Object.entries(data.services)) {
+                    const statusClass = status === 'up' ? 'status-up' : 'status-down';
+                    tableHtml += `<tr><td>${service}</td><td class="${statusClass}">${status}</td></tr>`;
+                }
+                
+                tableHtml += '</table>';
+                healthStatus.innerHTML = tableHtml;
+            } catch (error) {
+                healthStatus.innerHTML = '<p>Error checking services status.</p>';
+                console.error('Error checking health:', error);
+            }
+        }
+    </script>
+</body>
+</html> 
